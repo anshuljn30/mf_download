@@ -8,11 +8,10 @@ from shutil import rmtree
 import pandas as pd
 
 def rename(date, file_path):
-	#remove file type if not required in combined workbook
 	file_types = ['Arbitrage', 'CPOF', 'Debt', 'Equity', 'FMP', 'FOF', 'Gold', 'Hybrid', 'Interval', 'MYF']
-	excel_files = [] 
-	df_list = {} #dictionary to store excel sheets as dataframes referenced by sheet names
-	file_names = [] #file paths, to be deleted later
+	excel_files = []
+	df_list = {}
+	file_names = []
 	for file in os.listdir(file_path):
 		if (".xls" in file) and not (file.startswith('icici')):
 			for file_type in file_types:
@@ -35,7 +34,7 @@ def rename(date, file_path):
 			for sheet in file.sheet_names:
 				df_list[sheet] = file.parse(sheet)
 					
-		rmtree(os.path.join(file_path, directory))	#delete directory
+		rmtree(os.path.join(file_path, directory))	
 
 	writer = pd.ExcelWriter(os.path.join(file_path, 'icici_portfolios_' + date.strftime('%Y%m') + '.xls'))
 	for sheet, data in df_list.items():
@@ -46,9 +45,12 @@ def rename(date, file_path):
 		os.remove(file)			
 
 
-def download(dates):
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+def download(dates, path):
+	file_path = os.path.join(path, 'icici') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+
+	chrome_driver = 'chromedriver.exe'
 	scraper = cfscrape.create_scraper()
 	driver = webdriver.Chrome(executable_path = chrome_driver)
 	driver.get('https://www.icicipruamc.com/Downloads/MonthlyPortfolioDisclosure.aspx')
@@ -67,14 +69,14 @@ def download(dates):
 
 			if cfurl != b'':
 				print('Downloading file for ' + d.strftime('%b%Y'))
-				with open(file_path+save_file_name, 'wb') as f:
+				with open(os.path.join(file_path,save_file_name), 'wb') as f:
 					f.write(cfurl)
 
 			try:
-				current_file = zipfile.ZipFile(file_path + save_file_name)
+				current_file = zipfile.ZipFile(os.path.join(file_path,save_file_name))
 				current_file.extractall(file_path)
 				current_file.close()
-				os.remove(file_path + save_file_name)
+				os.remove(os.path.join(file_path,save_file_name))
 				rename(d, file_path)
 			except:
 				print("Could not unzip " + save_file_name)		

@@ -4,9 +4,12 @@ import os
 import cfscrape
 import time
 
-def download(dates):	
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+def download(dates, path):	
+	file_path = os.path.join(path, 'hdfc') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+	chrome_driver = 'chromedriver.exe'
+	
 	scraper = cfscrape.create_scraper()
 
 	url = 'http://www.hdfcfund.com/downloads/monthlyportfolio/c96fcab8-269f-4a81-8bfb-19b2cb9d120f'
@@ -32,7 +35,7 @@ def download(dates):
 
 			if cfurl != b'':
 				print('Downloading file for ' + d.strftime('%b%Y'))
-				with open(file_path+save_file_name, 'wb') as f:
+				with open(os.path.join(file_path,save_file_name), 'wb') as f:
 					f.write(cfurl)	
 
 	driver.close()					

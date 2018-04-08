@@ -5,9 +5,12 @@ import pandas as pd
 import cfscrape
 import os
 
-def download(dates):
-	file_path = 'F:\\Projects\\internship\\test\\invesco\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+def download(dates, path):
+	file_path = os.path.join(path, 'invesco') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+
+	chrome_driver = 'chromedriver.exe'
 	url = 'https://invescomutualfund.com/literature-and-form?tab=Complete'
 	scraper = cfscrape.create_scraper()
 
@@ -34,7 +37,7 @@ def download(dates):
 
 				if cfurl != b'':
 					print('Downloading files for ' + d.strftime('%b%Y'))
-					with open(file_path + file_name, 'wb') as f:
+					with open(os.path.join(file_path,file_name), 'wb') as f:
 						f.write(cfurl)
 
 			excel_files = [] 
@@ -47,7 +50,7 @@ def download(dates):
 			i = 0
 			for file in excel_files:
 				for sheet in file.sheet_names:
-					df_list[sheet + '_' + str(i)] = file.parse(sheet)
+						df_list[sheet.replace(" ", "") + '_' + str(i)] = file.parse(sheet)
 				i += 1			
 
 			writer = pd.ExcelWriter(os.path.join(file_path, 'invesco_portfolios_' + d.strftime('%Y%m') + '.xls'))

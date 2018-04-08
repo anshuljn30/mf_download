@@ -4,16 +4,12 @@ import time
 import zipfile
 import os
 
-def rename(year, month, name, file_path):
-	for file in os.listdir(file_path):
-		if (".xls" in file) and (month in file) and (year in file):
-			os.rename(file, name[0:-4] + '.xls')
-
-
-
-def download(dates):
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+def download(dates, path):
+	file_path = os.path.join(path, 'birla') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+	
+	chrome_driver = 'chromedriver.exe'
 	scraper = cfscrape.create_scraper()
 
 	for d in dates:
@@ -37,13 +33,16 @@ def download(dates):
 
 			if cfurl != b'':
 				print('Downloading file for ' + d.strftime('%b%Y'))
-				with open(file_path+save_file_name, 'wb') as f:
+				with open(os.path.join(file_path,save_file_name), 'wb') as f:
 					f.write(cfurl)	
 
 			driver.close()		
 			
-			current_file = zipfile.ZipFile(file_path + save_file_name)
-			current_file.extractall()
+			current_file = zipfile.ZipFile(os.path.join(file_path,save_file_name))
+			current_file.extractall(file_path)
 			current_file.close()
-			os.remove(file_path + save_file_name)
-			rename(year, month, save_file_name, file_path)
+			os.remove(os.path.join(file_path,save_file_name))
+			for f in os.listdir(file_path):
+				if '.xls' in f and not f.startswith('birla_portfolios_'):
+					os.rename(os.path.join(file_path, f), os.path.join(file_path, 'birla_portfolios_' + d.strftime('%Y%m') + '.xls'))
+			
