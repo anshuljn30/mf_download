@@ -3,10 +3,15 @@ set up and throws a SSL Error (Bad Handshake, Certificate Verfication Failed)
 '''
 from selenium import webdriver
 import cfscrape
+import os
 
-def download(dates):
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+def download(dates, path):
+	file_path = os.path.join(path, 'essel') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+
+	chrome_driver = 'chromedriver.exe'
+
 	scraper = cfscrape.create_scraper()
 	driver = webdriver.Chrome(executable_path = chrome_driver)
 	driver.get('https://www.advisorkhoj.com/form-download-centre/Mutual-Funds/Essel-Mutual-Fund/Monthly-Portfolio-Disclosures')
@@ -24,7 +29,7 @@ def download(dates):
 
 			if cfurl != b'':
 				print('Downloading file for ' + d.strftime('%b%Y'))
-				with open(file_path+save_file_name, 'wb') as f:
+				with open(os.path.join(file_path,save_file_name), 'wb') as f:
 					f.write(cfurl)	
 
 	driver.close()		

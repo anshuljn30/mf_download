@@ -2,11 +2,13 @@ from selenium import webdriver
 import cfscrape
 import time
 import re
+import os
 
-
-def download(dates):
-    file_path = "C:\\Users\\Administrator\\Documents\\sd-src\\sql_data\\mutual_fund_data\\raw\\boi_axa\\"
-    chrome_driver = "C:\\Users\\Administrator\\Downloads\\chromedriver_win32\\chromedriver.exe"
+def download(dates, path):
+    file_path = os.path.join(path, 'boi') 
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
+    chrome_driver = 'chromedriver.exe'    
     scraper = cfscrape.create_scraper()
     driver = webdriver.Chrome(executable_path=chrome_driver)
     driver.get("http://www.boiaxa-im.com/downloads/download.php")
@@ -30,5 +32,5 @@ def download(dates):
         save_file_name = "boi_axa_portfolios_" + d.strftime('%Y%m') + '.xlsx'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(file_path + save_file_name, 'wb') as f:
+        with open(os.path.join(file_path,save_file_name), 'wb') as f:
             f.write(cfurl.content)

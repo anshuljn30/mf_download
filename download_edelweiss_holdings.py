@@ -1,10 +1,14 @@
 from selenium import webdriver
 import cfscrape
+import os
 
+def download(dates, path):
+    file_path = os.path.join(path, 'edelweiss') 
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
 
-def download(dates):
-    file_path = "C:\\Users\\Administrator\\Documents\\sd-src\\mutual_fund_data\\edelweiss\\"
-    chrome_driver = "C:\\Users\\Administrator\\Downloads\\chromedriver_win32\\chromedriver.exe"
+    chrome_driver = 'chromedriver.exe'
+
     driver = webdriver.Chrome(executable_path=chrome_driver)
     driver.get("http://www.edelweissmf.com/StatutoryDisclosures/monthly-portfolio.aspx")
     scraper = cfscrape.create_scraper()
@@ -25,7 +29,7 @@ def download(dates):
         save_file_name = "edelweiss_portfolios_" + d.strftime('%Y%m') + '.xlsx'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(file_path + save_file_name, 'wb') as f:
+        with open(os.path.join(file_path,save_file_name), 'wb') as f:
             f.write(cfurl.content)
 
     driver.close()

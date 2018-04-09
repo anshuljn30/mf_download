@@ -1,10 +1,15 @@
 from selenium import webdriver
 import cfscrape
+import os
 
-def download(dates):
+def download(dates, path):
 	url = 'https://assetmanagement.kotak.com/portfolios'
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+	file_path = os.path.join(path, 'kotak') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+
+	chrome_driver = 'chromedriver.exe'
+
 
 	scraper = cfscrape.create_scraper()
 	driver = webdriver.Chrome(executable_path = chrome_driver)
@@ -23,7 +28,7 @@ def download(dates):
 			save_file_name = 'kotak_portfolios_' + d.strftime("%Y%m") + '.xls'
 			if cfurl != b'':
 				print("Downloading file for" + d.strftime("%b%Y"))
-				with open(file_path+save_file_name, 'wb') as f:
+				with open(os.path.join(file_path,save_file_name), 'wb') as f:
 					f.write(cfurl)
 
 	driver.close()				

@@ -2,9 +2,14 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import cfscrape
 import time 
-def download(dates):
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+import os
+def download(dates, path):
+	file_path = os.path.join(path, 'lnt') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+
+	chrome_driver = 'chromedriver.exe'
+
 	url = 'https://www.ltfs.com/companies/lnt-investment-management/downloads.html'
 
 	scraper = cfscrape.create_scraper()
@@ -38,6 +43,7 @@ def download(dates):
 			cfurl = scraper.get(file_link).content
 			save_file_name = 'l&t_portfolios_' + d.strftime("%Y%m") + '.xls'
 
-			with open(file_path + save_file_name, 'wb') as f:
+			with open(os.path.join(file_path,save_file_name), 'wb') as f:
 				print('Downloading file for ' + year + month)
 				f.write(cfurl)
+	driver.close()			

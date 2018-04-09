@@ -53,9 +53,13 @@ def rename(file_path, date):
 		os.remove(file)
 		
 
-def download(dates):
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+def download(dates, path):
+	file_path = os.path.join(path, 'dsp') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+
+	chrome_driver = 'chromedriver.exe'
+
 	default_download_path = 'C:\\Users\\Mreenav\\Downloads'
 	
 	for d in dates:

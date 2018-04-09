@@ -1,10 +1,12 @@
 from selenium import webdriver
 import cfscrape
+import os
 
-
-def download(dates):
-    file_path = "C:\\Users\\Administrator\\Documents\\sd-src\\mutual_fund_data\\canara_robeco\\"
-    chrome_driver = "C:\\Users\\Administrator\\Downloads\\chromedriver_win32\\chromedriver.exe"
+def download(dates, path):
+    file_path = os.path.join(path, 'canara') 
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
+    chrome_driver = "chromedriver.exe"
     scraper = cfscrape.create_scraper()
 
     for d in dates:
@@ -25,7 +27,7 @@ def download(dates):
 
             if cfurl != b'':
                 print('Downloading file for ' + d.strftime('%b%Y'))
-                with open(file_path+save_file_name, 'wb') as f:
+                with open(os.path.join(file_path,save_file_name), 'wb') as f:
                     f.write(cfurl)
 
             driver.close()

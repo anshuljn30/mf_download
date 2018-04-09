@@ -1,11 +1,15 @@
 from selenium import webdriver
 import cfscrape
 import time
+import os
 
+def download(dates, path):
+    file_path = os.path.join(path, 'idbi') 
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
 
-def download(dates):
-    file_path = "C:\\Users\\Administrator\\Documents\\sd-src\\mutual_fund_data\\idbi\\"
-    chrome_driver = "C:\\Users\\Administrator\\Downloads\\chromedriver_win32\\chromedriver.exe"
+    chrome_driver = 'chromedriver.exe'
+
     driver = webdriver.Chrome(executable_path=chrome_driver)
     driver.get("https://www.idbimutual.co.in/Downloads/Fund-Portfolios")
     driver.find_element_by_xpath(".//input[@name = 'ctl00$ctl00$ContentPlaceHolder1$chkclosepopup']").click()
@@ -29,7 +33,7 @@ def download(dates):
         save_file_name = "idbi_portfolios_" + d.strftime('%Y%m') + '.xlsx'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(file_path + save_file_name, 'wb') as f:
+        with open(os.path.join(file_path,save_file_name), 'wb') as f:
             f.write(cfurl.content)
 
     driver.close()
