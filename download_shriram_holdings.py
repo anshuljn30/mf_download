@@ -4,9 +4,13 @@ import time
 import os
 
 
-def download(dates):
-    file_path = "C:\\Users\\Administrator\\Documents\\sd-src\\sql_data\\mutual_fund_data\\raw\\shriram\\"
-    chrome_driver = "C:\\Users\\Administrator\\Downloads\\chromedriver_win32\\chromedriver.exe"
+def download(dates, path):
+    file_path = os.path.join(path, 'shriram\\') 
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
+
+    chrome_driver = 'chromedriver.exe'
+
     scraper = cfscrape.create_scraper()
     chrome_options = webdriver.ChromeOptions()
     prefs = {"download.default_directory": file_path}
@@ -48,7 +52,7 @@ def download(dates):
         save_file_name = "shriram_portfolios_" + d.strftime('%Y%m') + '.xlsx'
         print('Downloading file for ' + d.strftime('%b%Y'))
         file_name = max([file_path + f for f in os.listdir(file_path)], key=os.path.getctime)
-        os.rename(file_name, file_path + save_file_name)
+        os.rename(os.path.join(file_path,file_name), os.path.join(file_path,save_file_name))
 
         driver.refresh()
         time.sleep(3)

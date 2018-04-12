@@ -1,11 +1,15 @@
 from selenium import webdriver
 import cfscrape
 import time
+import os
 
+def download(dates, path):
+    file_path = os.path.join(path, 'pioneer') 
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
 
-def download(dates):
-    file_path = "C:\\Users\\Administrator\\Documents\\sd-src\\mutual_fund_data\\baroda_pioneer\\"
-    chrome_driver = "C:\\Users\\Administrator\\Downloads\\chromedriver_win32\\chromedriver.exe"
+    chrome_driver = 'chromedriver.exe'
+
     scraper = cfscrape.create_scraper()
     driver = webdriver.Chrome(executable_path=chrome_driver)
     driver.get("http://www.barodapioneer.in/Downloads/Pages/Latest-Factsheet-and-Profile.aspx")
@@ -32,13 +36,13 @@ def download(dates):
         if file:
             file_link = file[0].get_attribute('href')
             cfurl = scraper.get(file_link).content
-            save_file_name = "baroda_pioneer_portfolios_" + d.strftime('%Y%m') + '.xlsx'
+            save_file_name = "pioneer_portfolios_" + d.strftime('%Y%m') + '.xlsx'
 
             if cfurl != b'':
                 print('Downloading file for ' + d.strftime('%b%Y'))
-                with open(file_path+save_file_name, 'wb') as f:
+                with open(os.path.join(file_path,save_file_name), 'wb') as f:
                     f.write(cfurl)
 
             driver.refresh()
             time.sleep(3)
-
+    driver.close()            

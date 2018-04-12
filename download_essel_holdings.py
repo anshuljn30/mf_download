@@ -13,7 +13,11 @@ def download(dates, path):
 	chrome_driver = 'chromedriver.exe'
 
 	scraper = cfscrape.create_scraper()
-	driver = webdriver.Chrome(executable_path = chrome_driver)
+	chrome_options = webdriver.ChromeOptions()
+	prefs = {"download.default_directory": file_path}
+	chrome_options.add_experimental_option("prefs", prefs)
+	driver = webdriver.Chrome(executable_path=chrome_driver, chrome_options=chrome_options)
+	
 	driver.get('https://www.advisorkhoj.com/form-download-centre/Mutual-Funds/Essel-Mutual-Fund/Monthly-Portfolio-Disclosures')
 	for d in dates:
 		year = d.strftime("%Y")
@@ -24,8 +28,10 @@ def download(dates, path):
 
 		if file:
 			file_link = file[1].get_attribute("href")
+			print(file_link)
 			cfurl = scraper.get(file_link, verify = False).content
 			save_file_name = "essel_portfolios_" + d.strftime('%Y%m') + '.xls'
+			
 
 			if cfurl != b'':
 				print('Downloading file for ' + d.strftime('%b%Y'))

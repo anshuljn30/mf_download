@@ -5,14 +5,21 @@ import time
 import os
 from shutil import copyfile
 
-def download(dates):
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
-	default_download_path = 'C:\\Users\\Mreenav\\Downloads\\'
+def download(dates, path):
+	file_path = os.path.join(path, 'sbi') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+
+	chrome_driver = 'chromedriver.exe'
+
+	
 	scraper = cfscrape.create_scraper()
 
 	url = 'https://www.sbimf.com/en-us/portfolios'
-	driver = webdriver.Chrome(executable_path = chrome_driver)
+	chrome_options = webdriver.ChromeOptions()
+	prefs = {"download.default_directory": file_path}
+	chrome_options.add_experimental_option("prefs", prefs)
+	driver = webdriver.Chrome(executable_path=chrome_driver, chrome_options=chrome_options)
 	driver.get(url)	
 
 	for d in dates:
@@ -38,13 +45,13 @@ def download(dates):
 			#set delay according to download speed
 			time.sleep(60)
 			print("Downloaded file for " + d.strftime("%B%Y"))
-			for file in os.listdir(default_download_path):
+			for file in os.listdir(file_path):
 				if ('.xls' in file) and (('equity' in file.lower()) or ('others' in file.lower())) and (year in file) and ((month.lower() in file.lower()) or (d.strftime("%m") in file.lower())):
 					extension = file[file.index('.') : ]
 					name = "sbi_portfolios_" + d.strftime('%Y%m') + extension
-					copyfile(os.path.join(default_download_path, file), os.path.join(file_path, name))
-					os.remove(os.path.join(default_download_path, file))
-					#os.rename(os.path.join(file_path, file), os.path.join(file_path, name))		
+					#copyfile(os.path.join(default_download_path, file), os.path.join(file_path, name))
+					#os.remove(os.path.join(default_download_path, file))
+					os.rename(os.path.join(file_path, file), os.path.join(file_path, name))		
 
 	driver.close()				
 

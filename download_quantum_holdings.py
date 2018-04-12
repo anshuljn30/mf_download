@@ -2,10 +2,15 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import cfscrape
 import time
+import os
 
-def download(dates):
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+def download(dates, path):
+	file_path = os.path.join(path, 'quantum') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
+
+	chrome_driver = 'chromedriver.exe'
+
 	url = 'https://www.quantumamc.com/schemeportfolio.aspx?SchemeId=0&FactSheetType=2'
 
 	scraper = cfscrape.create_scraper()
@@ -22,6 +27,9 @@ def download(dates):
 		select_year = Select(driver.find_element_by_id("ddnYear"))
 		select_year.select_by_visible_text(year)
 
+		select_month = Select(driver.find_element_by_id("ddnMonth"))
+		select_month.select_by_visible_text(month)
+
 		driver.find_element_by_xpath('.//button[contains(text(), "Search")]').click()
 		time.sleep(5)
 
@@ -34,6 +42,6 @@ def download(dates):
 			save_file_name = 'quantum_portfolios_' + d.strftime("%Y%m") + '.xls'
 			if cfurl != b'':
 				print("Downloading file for" + d.strftime("%b%Y"))
-				with open(file_path+save_file_name, 'wb') as f:
+				with open(os.path.join(file_path,save_file_name), 'wb') as f:
 					f.write(cfurl)
 	driver.close()                

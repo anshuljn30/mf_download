@@ -60,12 +60,15 @@ def download(dates, path):
 
 	chrome_driver = 'chromedriver.exe'
 
-	default_download_path = 'C:\\Users\\Mreenav\\Downloads'
+	chrome_options = webdriver.ChromeOptions()
+	prefs = {"download.default_directory": file_path}
+	chrome_options.add_experimental_option("prefs", prefs)
 	
 	for d in dates:
 		year = d.strftime("%Y")
 		month = d.strftime("%b")
-		driver = webdriver.Chrome(executable_path = chrome_driver)
+
+		driver = webdriver.Chrome(executable_path=chrome_driver, chrome_options=chrome_options)
 		driver.get('https://dspblackrock.com/about-us/mandatory-disclosure/month-end-portfolio-disclosures')
 		time.sleep(5)
 		file = driver.find_elements_by_xpath('.//a[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Portfolio")]')
@@ -76,14 +79,12 @@ def download(dates, path):
 			#set delay as per maximum expected time to download a 500KB file 
 			time.sleep(20)
 		#Copy files from default download address to path	
-			for file in os.listdir(default_download_path):
+			for file in os.listdir(file_path):
 				if file.startswith("month_end_portfolio"):
-					source = os.path.join(default_download_path, file)
+					source = os.path.join(file_path, file)
 					current_file = zipfile.ZipFile(source)
 					current_file.extractall(file_path)
 					current_file.close()
-					#copyfile(source, os.path.join(file_path, file))	
-					#print("Copying data from " + source +" to " + os.path.join(file_path,file))
 					os.remove(source)
 			driver.close()				
 		

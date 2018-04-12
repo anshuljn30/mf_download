@@ -20,6 +20,7 @@ def download(dates, path):
 
         portfolio_panel = driver.find_element_by_xpath('.//ul[@id="DownloadYears"]')
 
+        year_to_click = int(year)
         if month == 'December':
             year_to_click = int(year) + 1
 
@@ -53,3 +54,4 @@ def download(dates, path):
 
         driver.refresh()
         time.sleep(3)
+    driver.close()        

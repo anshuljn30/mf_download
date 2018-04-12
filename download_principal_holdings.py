@@ -1,10 +1,14 @@
 from selenium import webdriver
 import cfscrape
+import os
 
+def download(dates, path):
+	file_path = os.path.join(path, 'principal') 
+	if not os.path.exists(file_path):
+		os.mkdir(file_path)
 
-def download(dates):
-	file_path = 'F:\\Projects\\internship\\test\\'
-	chrome_driver = 'F:\\Projects\\internship\\birla_data\\chromedriver.exe'
+	chrome_driver = 'chromedriver.exe'
+
 	scraper = cfscrape.create_scraper()
 	driver = webdriver.Chrome(executable_path=chrome_driver)
 	driver.get("http://www.principalindia.com/downloads/disclosures.aspx")
@@ -14,7 +18,7 @@ def download(dates):
 		year = d.strftime('%Y')
 		month = d.strftime('%B')
 
-		div = driver.find_element_by_xpath('.//div[@contentindex="25c"]')
+		div = driver.find_element_by_xpath('.//div[@contentindex="24c"]')
 		file = div.find_elements_by_xpath('.//a[contains(text(), "' + year + '") and contains(text(), "' + month + '")]')
 
 		if file:
@@ -24,7 +28,7 @@ def download(dates):
 
 			if cfurl != b'':
 				print('Downloading file for ' + d.strftime('%b%Y'))
-				with open(file_path+save_file_name, 'wb') as f:
+				with open(os.path.join(file_path,save_file_name), 'wb') as f:
 					f.write(cfurl)	
 
 	driver.close()		

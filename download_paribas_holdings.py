@@ -1,11 +1,15 @@
 from selenium import webdriver
 import cfscrape
 import time
+import os
 
+def download(dates, path):
+    file_path = os.path.join(path, 'paribas') 
+    if not os.path.exists(file_path):
+        os.mkdir(file_path)
 
-def download(dates):
-    file_path = "C:\\Users\\Administrator\\Documents\\sd-src\\sql_data\\mutual_fund_data\\raw\\bnp_paribas\\"
-    chrome_driver = "C:\\Users\\Administrator\\Downloads\\chromedriver_win32\\chromedriver.exe"
+    chrome_driver = 'chromedriver.exe'
+
     scraper = cfscrape.create_scraper()
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
@@ -45,10 +49,10 @@ def download(dates):
 
         time.sleep(3)
         cfurl = scraper.get(file_link)
-        save_file_name = "bnp_paribas_portfolios_" + d.strftime('%Y%m') + '.xlsx'
+        save_file_name = "paribas_portfolios_" + d.strftime('%Y%m') + '.xlsx'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(file_path + save_file_name, 'wb') as f:
+        with open(os.path.join(file_path , save_file_name), 'wb') as f:
             f.write(cfurl.content)
 
     driver.close()
