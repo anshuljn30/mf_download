@@ -17,8 +17,12 @@ def download(dates, path):
 
 	for d in dates:
 		string = d.strftime("%m.%Y")
-
-		file = driver.find_elements_by_xpath('.//a[contains(text(), "' + string + '") and contains(text(), "Portfolio")]')
+		if (d.year == 2017 and d.month > 8) or (d.year >= 2018):
+			year = d.strftime("%Y")
+			month = d.strftime("%B")
+			file = file = driver.find_elements_by_xpath('.//a[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Portfolio")]')
+		else:
+			file = driver.find_elements_by_xpath('.//a[contains(text(), "' + string + '") and contains(text(), "Portfolio")]')
 
 		if file:
 			for i in range(len(file)):
