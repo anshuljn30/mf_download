@@ -87,7 +87,9 @@ def download(dates, path):
 					current_file.close()
 					os.remove(source)
 			driver.close()				
-		
-			rename(file_path, d)		
+			try:
+				rename(file_path, d)
+			except:
+				continue			
 
 			

@@ -11,18 +11,22 @@ def download(dates, path):
 	
 	chrome_driver = 'chromedriver.exe'
 	scraper = cfscrape.create_scraper()
-
+	driver = webdriver.Chrome(executable_path = chrome_driver)
 	for d in dates:
 		year = d.strftime("%Y")
 		month = d.strftime("%b")
-		driver = webdriver.Chrome(executable_path = chrome_driver)
+		
 		driver.get('https://mf.adityabirlacapital.com/Pages/Individual/Forms-Downloads/MonthlyPortfolio.aspx')
 		file = driver.find_elements_by_xpath('.//a[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Monthly Portfolios as on")]')
 
 		while not file:
-			driver.find_element_by_css_selector('a.goNext').click()
-			file = driver.find_elements_by_xpath('.//a[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Monthly Portfolios as on")]')
-
+			try:
+				driver.find_element_by_xpath('.//a[@class="goNext"]').click()
+				time.sleep(3)
+			except:
+				break
+			file = driver.find_elements_by_xpath('.//a[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Monthly Portfolios as on")]')		
+				
 		if file:
 			if file[0].get_attribute("href").startswith("http"):
 				file_link = file[0].get_attribute("href")
@@ -36,7 +40,7 @@ def download(dates, path):
 				with open(os.path.join(file_path,save_file_name), 'wb') as f:
 					f.write(cfurl)	
 
-			driver.close()		
+					
 			
 			current_file = zipfile.ZipFile(os.path.join(file_path,save_file_name))
 			current_file.extractall(file_path)
@@ -45,4 +49,4 @@ def download(dates, path):
 			for f in os.listdir(file_path):
 				if '.xls' in f and not f.startswith('birla_portfolios_'):
 					os.rename(os.path.join(file_path, f), os.path.join(file_path, 'birla_portfolios_' + d.strftime('%Y%m') + '.xls'))
-			
+	driver.close()		

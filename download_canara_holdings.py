@@ -17,13 +17,16 @@ def download(dates, path):
         file = driver.find_elements_by_xpath('.//a[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Equity")]')
 
         while not file:
-            driver.find_element_by_xpath('//td[@class="ms-paging"]/a/img[@alt="Next"]').click()
+            try:
+                driver.find_element_by_xpath('//td[@class="ms-paging"]/a/img[@alt="Next"]').click()
+            except:
+                break    
             file = driver.find_elements_by_xpath('.//a[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Equity")]')
 
         if file:
             file_link = file[0].get_attribute('href')
             cfurl = scraper.get(file_link).content
-            save_file_name = "canara_robeco_portfolios_" + d.strftime('%Y%m') + '.xlsx'
+            save_file_name = "canara_robeco_portfolios_" + d.strftime('%Y%m') + '.xls'
 
             if cfurl != b'':
                 print('Downloading file for ' + d.strftime('%b%Y'))

@@ -2,7 +2,7 @@ import download_axis_holdings as axis
 import download_pioneer_holdings as baroda_pioneer
 import download_birla_holdings as birla_sunlife
 import download_paribas_holdings as bnp_paribas
-import download_boi_holdings as boi_axa
+#import download_boi_holdings as boi_axa
 import download_canara_holdings as canara_robeco
 import download_dhfl_holdings as dhfl_pramerica
 import download_dsp_holdings as dsp_blackrock
@@ -32,12 +32,12 @@ import download_reliance_holdings as reliance
 import download_sahara_holdings as sahara
 import download_sbi_holdings as sbi
 import download_shriram_holdings as shriram
-import download_srei_holdings as srei
+#import download_srei_holdings as srei
 import download_sundaram_holdings as sundaram
 import download_tata_holdings as tata
 import download_taurus_holdings as taurus
 import download_union_holdings as union
-#import download_uti_holdings as uti
+import download_uti_holdings as uti
 
 
 def main(dates, path):
@@ -45,7 +45,7 @@ def main(dates, path):
     axis.download(dates, path)
     baroda_pioneer.download(dates, path)
     bnp_paribas.download(dates, path)
-    boi_axa.download(dates, path)
+    #boi_axa.download(dates, path)
     canara_robeco.download(dates, path)
     edelweiss.download(dates, path)
     franklin_templeton.download(dates, path)
@@ -72,9 +72,9 @@ def main(dates, path):
     dsp_blackrock.download(dates, path)
     essel.download(dates, path)
     hdfc.download(dates, path)
-    hsbc.download(dates, path)
+    #hsbc.download(dates, path)
     icici_prudential.download(dates, path)
-    iifl.download(dates, path)
+    #iifl.download(dates, path)
     invesco.download(dates, path)
     jm_financial.download(dates, path)
     kotak.download(dates, path)
@@ -83,6 +83,6 @@ def main(dates, path):
     quantum.download(dates, path)
     sahara.download(dates, path)
     sbi.download(dates, path)
-    srei.download(dates, path)
+    #srei.download(dates, path)
     sundaram.download(dates, path)
     uti.download(dates, path)

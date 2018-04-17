@@ -49,7 +49,7 @@ def download(dates, path):
         file.find_element_by_xpath('following-sibling::td//input').click()
         time.sleep(2)
 
-        save_file_name = "shriram_portfolios_" + d.strftime('%Y%m') + '.xlsx'
+        save_file_name = "shriram_portfolios_" + d.strftime('%Y%m') + '.xls'
         print('Downloading file for ' + d.strftime('%b%Y'))
         file_name = max([file_path + f for f in os.listdir(file_path)], key=os.path.getctime)
         os.rename(os.path.join(file_path,file_name), os.path.join(file_path,save_file_name))

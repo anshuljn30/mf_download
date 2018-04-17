@@ -1,5 +1,5 @@
 from selenium import webdriver
-import cfscrape
+import time
 import os
 
 def download(dates, path):
@@ -9,13 +9,15 @@ def download(dates, path):
 		os.mkdir(file_path)
 
 	chrome_driver = 'chromedriver.exe'
-
-
-	scraper = cfscrape.create_scraper()
-	driver = webdriver.Chrome(executable_path = chrome_driver)
-	driver.get(url)	
+	chrome_options = webdriver.ChromeOptions()
+	prefs = {"download.default_directory": file_path}
+	chrome_options.add_experimental_option("prefs", prefs)
+	
 
 	for d in dates:
+		
+		driver = webdriver.Chrome(executable_path=chrome_driver, chrome_options=chrome_options)
+		driver.get(url)
 		year = d.strftime("%Y")
 		month = d.strftime("%B")
 
@@ -23,12 +25,13 @@ def download(dates, path):
 
 		if file:
 			file_link = file[0].get_attribute("href")
-			cfurl = scraper.get(file_link).content
+			driver.get(file_link)
 
 			save_file_name = 'kotak_portfolios_' + d.strftime("%Y%m") + '.xls'
-			if cfurl != b'':
-				print("Downloading file for" + d.strftime("%b%Y"))
-				with open(os.path.join(file_path,save_file_name), 'wb') as f:
-					f.write(cfurl)
-
-	driver.close()				
+			print("Downloading file for" + d.strftime("%b%Y"))
+			time.sleep(30)	#set as per connection speed
+			for f in os.listdir(file_path):
+				if '.xls' in f:
+					if not f.startswith("kotak_"):
+						os.rename(os.path.join(file_path,f), os.path.join(file_path,save_file_name))
+			driver.close()				

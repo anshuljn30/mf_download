@@ -23,7 +23,7 @@ def download(dates, path):
         file_link = file.get_attribute('href')
 
         cfurl = scraper.get(file_link)
-        save_file_name = "idfc_portfolios_" + d.strftime('%Y%m') + '.xlsx'
+        save_file_name = "idfc_portfolios_" + d.strftime('%Y%m') + '.xls'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
         with open(os.path.join(file_path,save_file_name), 'wb') as f:

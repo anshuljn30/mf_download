@@ -49,7 +49,7 @@ def download(dates, path):
 
         time.sleep(3)
         cfurl = scraper.get(file_link)
-        save_file_name = "paribas_portfolios_" + d.strftime('%Y%m') + '.xlsx'
+        save_file_name = "paribas_portfolios_" + d.strftime('%Y%m') + '.xls'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
         with open(os.path.join(file_path , save_file_name), 'wb') as f:

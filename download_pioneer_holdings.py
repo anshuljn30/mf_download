@@ -25,9 +25,12 @@ def download(dates, path):
         file = []
         while not file:
             if trial_no > 1:
-                portfolio_panel.find_element_by_xpath('.//a/img[@alt="Next"]').click()
-                portfolio_panel = driver.find_elements_by_xpath('.//div[contains(text(), "Portfolio")]')
-                portfolio_panel = portfolio_panel[-1].find_element_by_xpath('following-sibling::div')
+                try:
+                    portfolio_panel.find_element_by_xpath('.//a/img[@alt="Next"]').click()
+                    portfolio_panel = driver.find_elements_by_xpath('.//div[contains(text(), "Portfolio")]')
+                    portfolio_panel = portfolio_panel[-1].find_element_by_xpath('following-sibling::div')
+                except:
+                    break    
 
             file = portfolio_panel.find_elements_by_xpath(
                 './/a[contains(text(), "' + year + '") and contains(text(), "' + month + '")]')
@@ -36,13 +39,13 @@ def download(dates, path):
         if file:
             file_link = file[0].get_attribute('href')
             cfurl = scraper.get(file_link).content
-            save_file_name = "pioneer_portfolios_" + d.strftime('%Y%m') + '.xlsx'
+            save_file_name = "pioneer_portfolios_" + d.strftime('%Y%m') + '.xls'
 
             if cfurl != b'':
                 print('Downloading file for ' + d.strftime('%b%Y'))
                 with open(os.path.join(file_path,save_file_name), 'wb') as f:
                     f.write(cfurl)
 
-            driver.refresh()
+            driver.get("http://www.barodapioneer.in/Downloads/Pages/Latest-Factsheet-and-Profile.aspx")
             time.sleep(3)
     driver.close()            
