@@ -64,22 +64,25 @@ def download(dates, path):
 
 		if file:
 			file_link = file[0].get_attribute("href")
-			cfurl = scraper.get(file_link).content
-			save_file_name = "icici_portfolios_" + d.strftime('%Y%m') + '.zip'
-
-			if cfurl != b'':
-				print('Downloading file for ' + d.strftime('%b%Y'))
-				with open(os.path.join(file_path,save_file_name), 'wb') as f:
-					f.write(cfurl)
-
 			try:
-				current_file = zipfile.ZipFile(os.path.join(file_path,save_file_name))
-				current_file.extractall(file_path)
-				current_file.close()
-				os.remove(os.path.join(file_path,save_file_name))
-				rename(d, file_path)
+				cfurl = scraper.get(file_link).content
+				save_file_name = "icici_portfolios_" + d.strftime('%Y%m') + '.zip'
+
+				if cfurl != b'':
+					print('Downloading file for ' + d.strftime('%b%Y'))
+					with open(os.path.join(file_path,save_file_name), 'wb') as f:
+						f.write(cfurl)
+
+				try:
+					current_file = zipfile.ZipFile(os.path.join(file_path,save_file_name))
+					current_file.extractall(file_path)
+					current_file.close()
+					os.remove(os.path.join(file_path,save_file_name))
+					rename(d, file_path)
+				except:
+					print("Could not unzip " + save_file_name)
 			except:
-				print("Could not unzip " + save_file_name)		
+				print("Data missing for " + d.strftime("%B %Y"))				
 
 
 	driver.close()		
