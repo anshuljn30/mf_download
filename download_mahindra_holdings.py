@@ -3,8 +3,9 @@ import cfscrape
 import time
 import os
 
+
 def download(dates, path):
-    file_path = os.path.join(path, 'mahindra') 
+    file_path = os.path.join(path, 'mahindra')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -41,10 +42,10 @@ def download(dates, path):
         save_file_name = "mahindra_portfolios_" + d.strftime('%Y%m') + '.xls'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path,save_file_name), 'wb') as f:
+        with open(os.path.join(file_path, save_file_name), 'wb') as f:
             f.write(cfurl.content)
 
         driver.refresh()
         time.sleep(3)
 
-    driver.close()        
+    driver.close()

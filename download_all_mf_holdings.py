@@ -52,7 +52,7 @@ def main(dates, path):
     idbi.download(dates, path)
     idfc.download(dates, path)
     indiabulls.download(dates, path)
-    mahindra.download(dates)
+    mahindra.download(dates, path)
     mirae.download(dates, path)
     motilal_oswal.download(dates, path)
     ppfas.download(dates, path)

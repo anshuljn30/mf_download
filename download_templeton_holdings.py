@@ -4,8 +4,9 @@ import time
 from selenium.webdriver.common.keys import Keys
 import os
 
+
 def download(dates, path):
-    file_path = os.path.join(path, 'templeton') 
+    file_path = os.path.join(path, 'templeton')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -38,7 +39,7 @@ def download(dates, path):
         save_file_name = "franklin_templeton_portfolios_" + d.strftime('%Y%m') + '.xls'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path,save_file_name), 'wb') as f:
+        with open(os.path.join(file_path, save_file_name), 'wb') as f:
             f.write(cfurl.content)
 
     driver.close()

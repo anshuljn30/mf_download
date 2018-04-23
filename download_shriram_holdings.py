@@ -5,7 +5,7 @@ import os
 
 
 def download(dates, path):
-    file_path = os.path.join(path, 'shriram\\') 
+    file_path = os.path.join(path, 'shriram\\')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -52,7 +52,7 @@ def download(dates, path):
         save_file_name = "shriram_portfolios_" + d.strftime('%Y%m') + '.xls'
         print('Downloading file for ' + d.strftime('%b%Y'))
         file_name = max([file_path + f for f in os.listdir(file_path)], key=os.path.getctime)
-        os.rename(os.path.join(file_path,file_name), os.path.join(file_path,save_file_name))
+        os.rename(os.path.join(file_path, file_name), os.path.join(file_path, save_file_name))
 
         driver.refresh()
         time.sleep(3)

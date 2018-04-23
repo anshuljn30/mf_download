@@ -3,7 +3,6 @@ import numpy as np
 
 
 def parse_files(dates):
-
     # Read all the master files
     root_path = "C:\\Users\\Administrator\\Documents\\sd-src\\sql_data\\"
     amc_master_file = root_path + "master_files\\new_amc_master.csv"
@@ -17,7 +16,8 @@ def parse_files(dates):
     for monthly_date in dates:
         print('Parsing NAV data for ' + monthly_date.strftime('%b %Y') + '....')
 
-        daily_dates = pd.date_range(monthly_date + pd.offsets.MonthBegin(-1), monthly_date + pd.offsets.MonthEnd(0), freq='d')
+        daily_dates = pd.date_range(monthly_date + pd.offsets.MonthBegin(-1), monthly_date + pd.offsets.MonthEnd(0),
+                                    freq='d')
         xls_out_file = xls_out_path + "all_mf_nav_" + monthly_date.strftime('%b_%Y') + '.csv'
 
         df_all_dates = pd.DataFrame()
@@ -39,8 +39,9 @@ def parse_files(dates):
             df.replace('\s+$', '', regex=True, inplace=True)  # end
 
             # Scrape fund type and amc name and put them in separate column
-            df.rename(columns={'Scheme Code':'scheme_code', 'Scheme Name':'scheme_name', 'Net Asset Value':'nav',
-                               'Repurchase Price':'repurchase_price', 'Sale Price':'sale_price', 'Date':'date'}, inplace=True)
+            df.rename(columns={'Scheme Code': 'scheme_code', 'Scheme Name': 'scheme_name', 'Net Asset Value': 'nav',
+                               'Repurchase Price': 'repurchase_price', 'Sale Price': 'sale_price', 'Date': 'date'},
+                      inplace=True)
             where_desc = df['scheme_name'].isnull()
             scheme_code = df['scheme_code'].str.lower()
             where_amc_name = where_desc & scheme_code.isin(amc_master['amc_name'].str.lower())
@@ -123,4 +124,3 @@ def assign_new_scheme_ids(df, fund_scheme_master, fund_scheme_master_file):
             df_scheme.to_csv(f, header=False, index=False)
         fund_scheme_master = fund_scheme_master.append(df_scheme)
     return fund_scheme_master
-

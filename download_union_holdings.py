@@ -3,8 +3,9 @@ import cfscrape
 import time
 import os
 
+
 def download(dates, path):
-    file_path = os.path.join(path, 'union') 
+    file_path = os.path.join(path, 'union')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -24,12 +25,13 @@ def download(dates, path):
         year_panel.find_element_by_xpath('./option[text() = "' + year + '"]').click()
         time.sleep(2)
 
-        file = driver.find_element_by_xpath('.//a[contains(text(),"' + month + '") and contains(text(),"' + year + '")]')
+        file = driver.find_element_by_xpath(
+            './/a[contains(text(),"' + month + '") and contains(text(),"' + year + '")]')
         file_link = file.get_attribute('href')
 
         cfurl = scraper.get(file_link)
         save_file_name = "union_portfolios_" + d.strftime('%Y%m') + '.xls'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path,save_file_name), 'wb') as f:
+        with open(os.path.join(file_path, save_file_name), 'wb') as f:
             f.write(cfurl.content)

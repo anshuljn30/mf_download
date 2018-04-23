@@ -4,8 +4,9 @@ import cfscrape
 import time
 import os
 
+
 def download(dates, path):
-    file_path = os.path.join(path, 'idbi') 
+    file_path = os.path.join(path, 'idbi')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -20,13 +21,14 @@ def download(dates, path):
     for d in dates:
         year = d.strftime('%Y')
         month = d.strftime('%b')
-        search =  d.strftime("%Y-") + str(int(d.strftime("%y"))+1)
+        search = d.strftime("%Y-") + str(int(d.strftime("%y")) + 1)
         try:
             select_year = Select(driver.find_element_by_id("ContentPlaceHolder1_ContentPlaceHolder1_ddlYearwise"))
             select_year.select_by_visible_text(search)
             time.sleep(5)
 
-            portfolio_panel = driver.find_element_by_xpath("//td[contains(text(), '" + year + "') and contains(text(), '" + month + "')]")
+            portfolio_panel = driver.find_element_by_xpath(
+                "//td[contains(text(), '" + year + "') and contains(text(), '" + month + "')]")
             portfolio_panel = portfolio_panel.find_element_by_xpath('following-sibling::td')
 
             file = portfolio_panel.find_element_by_tag_name('a')
@@ -36,8 +38,8 @@ def download(dates, path):
             save_file_name = "idbi_portfolios_" + d.strftime('%Y%m') + '.xls'
 
             print('Downloading file for ' + d.strftime('%b%Y'))
-            with open(os.path.join(file_path,save_file_name), 'wb') as f:
+            with open(os.path.join(file_path, save_file_name), 'wb') as f:
                 f.write(cfurl.content)
         except:
-            print("Data missing for " + d.strftime("%B %Y"))        
+            print("Data missing for " + d.strftime("%B %Y"))
     driver.close()

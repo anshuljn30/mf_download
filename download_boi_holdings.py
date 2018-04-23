@@ -4,11 +4,12 @@ import time
 import re
 import os
 
+
 def download(dates, path):
-    file_path = os.path.join(path, 'boi') 
+    file_path = os.path.join(path, 'boi')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
-    chrome_driver = 'chromedriver.exe'    
+    chrome_driver = 'chromedriver.exe'
     scraper = cfscrape.create_scraper()
     driver = webdriver.Chrome(executable_path=chrome_driver)
     driver.get("http://www.boiaxa-im.com/downloads/download.php")
@@ -22,7 +23,8 @@ def download(dates, path):
         month = d.strftime('%b')
         year = d.strftime('%Y')
 
-        file = driver.find_element_by_xpath('.//td[contains(text(),"' + month + '") and contains(text(),"' + year + '")]')
+        file = driver.find_element_by_xpath(
+            './/td[contains(text(),"' + month + '") and contains(text(),"' + year + '")]')
         file = file.find_element_by_xpath('following-sibling::td//a')
         file_link = file.get_attribute('onclick')
         file_link = re.findall(r"'([^']*)'", file_link)
@@ -32,5 +34,5 @@ def download(dates, path):
         save_file_name = "boi_axa_portfolios_" + d.strftime('%Y%m') + '.xlsx'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path,save_file_name), 'wb') as f:
+        with open(os.path.join(file_path, save_file_name), 'wb') as f:
             f.write(cfurl.content)

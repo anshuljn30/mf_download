@@ -4,7 +4,6 @@ import numpy as np
 
 
 def parse_files(amc_name, dates):
-
     # Read all the master files
     root_path = "C:\\Users\\Administrator\\Documents\\sd-src\\sql_data\\"
     amc_name_spaced = ' '.join(amc_name.split('_'))
@@ -120,7 +119,6 @@ def parse_files(amc_name, dates):
 
 
 def map_to_ids(df, security_master, fi_master, fund_master):
-
     # Map isin to security_id from the database
     df.replace('^\s+', '', regex=True, inplace=True)  # front
     df.replace('\s+$', '', regex=True, inplace=True)  # end
@@ -279,7 +277,7 @@ def merge_all_new_ids(df, security_master, fund_master):
     df_notnull2 = df_clean[df_clean['fund_id'].notnull()]
     df_null2 = df_null2.drop(['fund_id', 'fund_ticker'], axis=1)
     df_clean2 = pd.merge(df_null2, fund_master[['fund_name', 'fund_id']], left_on='fund_name', right_on='fund_name',
-                        how='left')
+                         how='left')
     df_clean2 = df_clean2.append(df_notnull2)
     return df_clean2
 
@@ -298,9 +296,8 @@ def write_to_csv(df, xls_out_path, amc_name):
 
 
 def parse_sheet_data(df, date, sheet_name, header_index, amc_name_spaced):
-
     # Find fund name in the sheet - a string contained within (amc_name) and (fund)
-    df_head = df.iloc[0:header_index+1]
+    df_head = df.iloc[0:header_index + 1]
     is_match = df_head.apply(
         lambda name: re.search('%s(.*)%s' % (amc_name_spaced.lower(), 'fund'), str(name).lower())).dropna()
     if is_match.any():
@@ -368,12 +365,15 @@ def parse_sheet_data(df, date, sheet_name, header_index, amc_name_spaced):
                 str_x = str_x.lower()
                 get_des = 0
                 matches_equity = ((re.search(r'equity', str_x) is not None) |
-                    (re.search(r'equities', str_x) is not None) | (re.search(r'equitites', str_x) is not None) |
-                    (re.search(r'preference', str_x) is not None) | (re.search(r'preferred', str_x) is not None))
+                                  (re.search(r'equities', str_x) is not None) | (
+                                  re.search(r'equitites', str_x) is not None) |
+                                  (re.search(r'preference', str_x) is not None) | (
+                                  re.search(r'preferred', str_x) is not None))
                 matches_debt = ((re.search(r'debt', str_x) is not None) | (re.search(r'debenture', str_x) is not None) |
-                     (re.search(r'bond', str_x) is not None) | (re.search(r'deposit', str_x) is not None) |
-                     (re.search(r'money', str_x) is not None) | (re.search(r'paper', str_x) is not None))
-                matches_listed = ((re.search(r'listed', str_x) is not None) | (re.search(r'unlisted', str_x) is not None))
+                                (re.search(r'bond', str_x) is not None) | (re.search(r'deposit', str_x) is not None) |
+                                (re.search(r'money', str_x) is not None) | (re.search(r'paper', str_x) is not None))
+                matches_listed = (
+                (re.search(r'listed', str_x) is not None) | (re.search(r'unlisted', str_x) is not None))
 
                 # Force is_equity_flag to 0 if it does not match equity or a listed keywords
                 if matches_debt:
@@ -411,8 +411,8 @@ def parse_sheet_data(df, date, sheet_name, header_index, amc_name_spaced):
     if 'nan' in df_clean.columns:
         del df_clean['nan']
 
-    df_clean['security_name'].replace('^[\s@#*$^-]+', '', regex=True, inplace=True) # front
-    df_clean['security_name'].replace('[\s@#*$^-]+$', '', regex=True, inplace=True) # end
+    df_clean['security_name'].replace('^[\s@#*$^-]+', '', regex=True, inplace=True)  # front
+    df_clean['security_name'].replace('[\s@#*$^-]+$', '', regex=True, inplace=True)  # end
 
     df_clean['fund_ticker'] = sheet_name
     df_clean["date"] = date

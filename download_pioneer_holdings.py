@@ -3,8 +3,9 @@ import cfscrape
 import time
 import os
 
+
 def download(dates, path):
-    file_path = os.path.join(path, 'pioneer') 
+    file_path = os.path.join(path, 'pioneer')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -30,7 +31,7 @@ def download(dates, path):
                     portfolio_panel = driver.find_elements_by_xpath('.//div[contains(text(), "Portfolio")]')
                     portfolio_panel = portfolio_panel[-1].find_element_by_xpath('following-sibling::div')
                 except:
-                    break    
+                    break
 
             file = portfolio_panel.find_elements_by_xpath(
                 './/a[contains(text(), "' + year + '") and contains(text(), "' + month + '")]')
@@ -43,9 +44,9 @@ def download(dates, path):
 
             if cfurl != b'':
                 print('Downloading file for ' + d.strftime('%b%Y'))
-                with open(os.path.join(file_path,save_file_name), 'wb') as f:
+                with open(os.path.join(file_path, save_file_name), 'wb') as f:
                     f.write(cfurl)
 
             driver.get("http://www.barodapioneer.in/Downloads/Pages/Latest-Factsheet-and-Profile.aspx")
             time.sleep(3)
-    driver.close()            
+    driver.close()

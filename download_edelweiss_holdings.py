@@ -2,8 +2,9 @@ from selenium import webdriver
 import cfscrape
 import os
 
+
 def download(dates, path):
-    file_path = os.path.join(path, 'edelweiss') 
+    file_path = os.path.join(path, 'edelweiss')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -22,14 +23,15 @@ def download(dates, path):
          and @class = "TabbedPanelsContent TabbedPanelsContentVisible"]')
         month_pane[-1].find_element_by_xpath('.//li[contains(text(), "' + month + '")]').click()
 
-        file = driver.find_element_by_xpath('.//a[contains(text(), "' + year + '") and contains(text(), "' + month + '")]')
+        file = driver.find_element_by_xpath(
+            './/a[contains(text(), "' + year + '") and contains(text(), "' + month + '")]')
         file_link = file.get_attribute('href')
 
         cfurl = scraper.get(file_link)
         save_file_name = "edelweiss_portfolios_" + d.strftime('%Y%m') + '.xls'
 
         print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path,save_file_name), 'wb') as f:
+        with open(os.path.join(file_path, save_file_name), 'wb') as f:
             f.write(cfurl.content)
 
     driver.close()
