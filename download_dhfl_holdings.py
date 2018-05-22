@@ -6,7 +6,7 @@ import os
 
 
 def download(dates, path):
-    file_path = os.path.join(path, 'dhfl')
+    file_path = os.path.join(path, 'dhfl_pramerica')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
     chrome_driver = 'chromedriver.exe'
@@ -28,7 +28,7 @@ def download(dates, path):
             file_link = file[0].get_attribute("href")
 
             cfurl = scraper.get(file_link).content
-            save_file_name = 'dhfl_portfolios_' + d.strftime("%Y%m") + '.xls'
+            save_file_name = 'dhfl_pramerica_portfolios_' + d.strftime("%Y%m") + '.xls'
 
             with open(os.path.join(file_path, save_file_name), 'wb') as f:
                 print('Downloading file for ' + year + month)

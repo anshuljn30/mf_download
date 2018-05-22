@@ -14,7 +14,7 @@ def rename(date, file_path):
     df_list = {}
     file_names = []
     for file in os.listdir(file_path):
-        if (".xls" in file) and not (file.startswith('icici')):
+        if (".xls" in file) and not (file.startswith('icici_prudential')):
             for file_type in file_types:
                 if file_type in file:
                     excel_files.append(pd.ExcelFile(os.path.join(file_path, file)))
@@ -36,7 +36,7 @@ def rename(date, file_path):
 
         rmtree(os.path.join(file_path, directory))
 
-    writer = pd.ExcelWriter(os.path.join(file_path, 'icici_portfolios_' + date.strftime('%Y%m') + '.xls'))
+    writer = pd.ExcelWriter(os.path.join(file_path, 'icici_prudential_portfolios_' + date.strftime('%Y%m') + '.xls'))
     for sheet, data in df_list.items():
         data.to_excel(writer, sheet)
     writer.save()
@@ -46,7 +46,7 @@ def rename(date, file_path):
 
 
 def download(dates, path):
-    file_path = os.path.join(path, 'icici')
+    file_path = os.path.join(path, 'icici_prudential')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -66,7 +66,7 @@ def download(dates, path):
             file_link = file[0].get_attribute("href")
             try:
                 cfurl = scraper.get(file_link).content
-                save_file_name = "icici_portfolios_" + d.strftime('%Y%m') + '.zip'
+                save_file_name = "icici_prudential_portfolios_" + d.strftime('%Y%m') + '.zip'
 
                 if cfurl != b'':
                     print('Downloading file for ' + d.strftime('%b%Y'))

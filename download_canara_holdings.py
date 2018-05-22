@@ -4,7 +4,7 @@ import os
 
 
 def download(dates, path):
-    file_path = os.path.join(path, 'canara')
+    file_path = os.path.join(path, 'canara_robeco')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
     chrome_driver = "chromedriver.exe"

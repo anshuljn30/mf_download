@@ -6,7 +6,7 @@ import os
 
 
 def download(dates, path):
-    file_path = os.path.join(path, 'motilal')
+    file_path = os.path.join(path, 'motilal_oswal')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -32,7 +32,7 @@ def download(dates, path):
             file_link = file[0].find_element_by_xpath('.//parent::tr').find_element_by_xpath('.//a').get_attribute(
                 "href")
             cfurl = scraper.get(file_link).content
-            save_file_name = "motilal_portfolios_" + d.strftime('%Y%m') + '.xls'
+            save_file_name = "motilal_oswal_portfolios_" + d.strftime('%Y%m') + '.xls'
 
             if cfurl != b'':
                 print('Downloading file for ' + d.strftime('%b%Y'))

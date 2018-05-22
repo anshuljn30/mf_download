@@ -6,7 +6,7 @@ import os
 
 
 def download(dates, path):
-    file_path = os.path.join(path, 'templeton')
+    file_path = os.path.join(path, 'franklin_templeton')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 

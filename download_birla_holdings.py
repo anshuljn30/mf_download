@@ -6,7 +6,7 @@ import os
 
 
 def download(dates, path):
-    file_path = os.path.join(path, 'birla')
+    file_path = os.path.join(path, 'birla_sun_life')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
@@ -36,7 +36,7 @@ def download(dates, path):
             else:
                 file_link = 'https://mf.adityabirlacapital.com' + file[0].get_attribute("onclick")[13:-16]
             cfurl = scraper.get(file_link).content
-            save_file_name = "birla_portfolios_" + d.strftime('%Y%m') + '.zip'
+            save_file_name = "birla_sun_life_portfolios_" + d.strftime('%Y%m') + '.zip'
 
             if cfurl != b'':
                 print('Downloading file for ' + d.strftime('%b%Y'))
@@ -48,7 +48,7 @@ def download(dates, path):
             current_file.close()
             os.remove(os.path.join(file_path, save_file_name))
             for f in os.listdir(file_path):
-                if '.xls' in f and not f.startswith('birla_portfolios_'):
+                if '.xls' in f and not f.startswith('birla_sun_life_portfolios_'):
                     os.rename(os.path.join(file_path, f),
-                              os.path.join(file_path, 'birla_portfolios_' + d.strftime('%Y%m') + '.xls'))
+                              os.path.join(file_path, 'birla_sun_life_portfolios_' + d.strftime('%Y%m') + '.xls'))
     driver.close()

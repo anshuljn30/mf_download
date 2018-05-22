@@ -45,7 +45,7 @@ def rename(file_path, date):
                 df_list[sheet] = file.parse(sheet)
         rmtree(os.path.join(file_path, directory))  # delete directory
 
-    writer = pd.ExcelWriter(os.path.join(file_path, 'dsp_portfolios_' + date.strftime('%Y%m') + '.xls'))
+    writer = pd.ExcelWriter(os.path.join(file_path, 'dsp_blackrock_portfolios_' + date.strftime('%Y%m') + '.xls'))
     for sheet, data in df_list.items():
         data.to_excel(writer, sheet)
     writer.save()
@@ -55,7 +55,7 @@ def rename(file_path, date):
 
 
 def download(dates, path):
-    file_path = os.path.join(path, 'dsp')
+    file_path = os.path.join(path, 'dsp_blackrock')
     if not os.path.exists(file_path):
         os.mkdir(file_path)
 
