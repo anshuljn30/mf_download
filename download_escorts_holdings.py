@@ -31,7 +31,7 @@ def download(dates, path):
             cfurl = scraper.get(file_link)
             save_file_name = "escorts_portfolios_" + d.strftime('%Y%m') + '.xls'
 
-            print('Downloading file for ' + d.strftime('%b%Y'))
+            print('Downloading file for Escorts on' + d.strftime('%b%Y'))
             with open(os.path.join(file_path, save_file_name), 'wb') as f:
                 f.write(cfurl.content)
 

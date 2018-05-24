@@ -69,7 +69,7 @@ def download(dates, path):
                 save_file_name = "icici_prudential_portfolios_" + d.strftime('%Y%m') + '.zip'
 
                 if cfurl != b'':
-                    print('Downloading file for ' + d.strftime('%b%Y'))
+                    print('Downloading file for ICICI on ' + d.strftime('%b%Y'))
                     with open(os.path.join(file_path, save_file_name), 'wb') as f:
                         f.write(cfurl)
 
@@ -81,6 +81,7 @@ def download(dates, path):
                     rename(d, file_path)
                 except:
                     print("Could not unzip " + save_file_name)
+                    os.remove(os.path.join(file_path, save_file_name))
             except:
                 print("Data missing for " + d.strftime("%B %Y"))
 

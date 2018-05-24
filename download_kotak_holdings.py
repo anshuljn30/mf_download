@@ -2,7 +2,7 @@ from selenium import webdriver
 import time
 import os
 
-
+'''
 def download(dates, path):
     url = 'https://assetmanagement.kotak.com/portfolios'
     file_path = os.path.join(path, 'kotak')
@@ -29,10 +29,13 @@ def download(dates, path):
             driver.get(file_link)
 
             save_file_name = 'kotak_portfolios_' + d.strftime("%Y%m") + '.xls'
-            print("Downloading file for" + d.strftime("%b%Y"))
+            print("Downloading file for Kotak on" + d.strftime("%b%Y"))
             time.sleep(30)  # set as per connection speed
             for f in os.listdir(file_path):
                 if '.xls' in f:
                     if not f.startswith("kotak_"):
                         os.rename(os.path.join(file_path, f), os.path.join(file_path, save_file_name))
             driver.close()
+'''
+def download(dates, path):
+    print("Skipping Kotak for now...\n\n")

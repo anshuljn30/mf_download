@@ -36,7 +36,7 @@ def download(dates, path):
                 cfurl = scraper.get(file_link).content
 
                 if cfurl != b'':
-                    print('Downloading files for ' + d.strftime('%b%Y'))
+                    print('Downloading files for Invesco on' + d.strftime('%b%Y'))
                     with open(os.path.join(file_path, file_name), 'wb') as f:
                         f.write(cfurl)
 

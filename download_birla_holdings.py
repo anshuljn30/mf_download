@@ -39,7 +39,7 @@ def download(dates, path):
             save_file_name = "birla_sun_life_portfolios_" + d.strftime('%Y%m') + '.zip'
 
             if cfurl != b'':
-                print('Downloading file for ' + d.strftime('%b%Y'))
+                print('Downloading file for Birla on ' + d.strftime('%b%Y'))
                 with open(os.path.join(file_path, save_file_name), 'wb') as f:
                     f.write(cfurl)
 

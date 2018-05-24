@@ -31,6 +31,6 @@ def download(dates, path):
             save_file_name = 'dhfl_pramerica_portfolios_' + d.strftime("%Y%m") + '.xls'
 
             with open(os.path.join(file_path, save_file_name), 'wb') as f:
-                print('Downloading file for ' + year + month)
+                print('Downloading file for DHFL Pramerica on' + year + month)
                 f.write(cfurl)
     driver.close()

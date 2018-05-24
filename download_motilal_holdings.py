@@ -23,10 +23,15 @@ def download(dates, path):
             './/td[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Month")]')
 
         while not file:
+            
+            if not driver.find_element_by_xpath('.//a[@class="select" and contains(text(), "Next")]').get_attribute("href"):
+                break
             driver.find_element_by_xpath('.//a[@class="select" and contains(text(), "Next")]').click()
             time.sleep(3)
+            
+                    
             file = driver.find_elements_by_xpath(
-                './/td[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Month")]')
+                    './/td[contains(text(), "' + year + '") and contains(text(), "' + month + '") and contains(text(), "Month")]')
 
         if file:
             file_link = file[0].find_element_by_xpath('.//parent::tr').find_element_by_xpath('.//a').get_attribute(
@@ -35,8 +40,8 @@ def download(dates, path):
             save_file_name = "motilal_oswal_portfolios_" + d.strftime('%Y%m') + '.xls'
 
             if cfurl != b'':
-                print('Downloading file for ' + d.strftime('%b%Y'))
+                print('Downloading file for Motilal Oswal on ' + d.strftime('%b%Y'))
                 with open(os.path.join(file_path, save_file_name), 'wb') as f:
                     f.write(cfurl)
 
-            driver.close()
+        driver.close()

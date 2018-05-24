@@ -77,7 +77,7 @@ def download(dates, path):
 
         if file:
             driver.get(file[0].get_attribute("href"))
-            print('Downloading file for ' + d.strftime('%b%Y'))
+            print('Downloading file for DSP BlackRock on ' + d.strftime('%b%Y'))
             # set delay as per maximum expected time to download a 500KB file
             time.sleep(20)
             # Copy files from default download address to path

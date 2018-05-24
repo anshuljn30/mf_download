@@ -32,9 +32,11 @@ def download(dates, path):
         header = driver.find_element_by_xpath('.//h1[contains(text(), "Portfolio") and contains(text(), "Monthly")]')
         header = header.find_element_by_xpath('.//parent::div')
         select_element = Select(header.find_element_by_xpath('.//descendant::select'))
-
-        select_element.select_by_visible_text(fiscal_year)
-        time.sleep(5)
+        try:            
+            select_element.select_by_visible_text(fiscal_year)
+            time.sleep(5)
+        except:
+            continue    
         file = driver.find_elements_by_xpath(
             './/div[contains(text(), "' + year + '") and contains(text(), "' + month + '")  and contains(text(), "Equity")]')
         if file:
@@ -44,9 +46,9 @@ def download(dates, path):
 
             file_link = file[0].get_attribute("href")
             cfurl = scraper.get(file_link).content
-            save_file_name = 'l&t_portfolios_' + d.strftime("%Y%m") + '.xls'
+            save_file_name = 'lnt_portfolios_' + d.strftime("%Y%m") + '.xls'
 
             with open(os.path.join(file_path, save_file_name), 'wb') as f:
-                print('Downloading file for ' + year + month)
+                print('Downloading file for L&T on ' + year + month)
                 f.write(cfurl)
     driver.close()

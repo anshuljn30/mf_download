@@ -20,14 +20,15 @@ def download(dates, path):
         month = d.strftime('%b')
         year = d.strftime('%Y')
 
-        file = driver.find_element_by_xpath('.//a[contains(., "' + month + '") and contains(., "' + year + '")]')
-        file_link = file.get_attribute('href')
+        file = driver.find_elements_by_xpath('.//a[contains(., "' + month + '") and contains(., "' + year + '")]')
+        if file:
+            file_link = file[0].get_attribute('href')
 
-        cfurl = scraper.get(file_link)
-        save_file_name = "indiabulls_portfolios_" + d.strftime('%Y%m') + '.xls'
+            cfurl = scraper.get(file_link)
+            save_file_name = "indiabulls_portfolios_" + d.strftime('%Y%m') + '.xls'
 
-        print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path, save_file_name), 'wb') as f:
-            f.write(cfurl.content)
+            print('Downloading file for Indiabulls on ' + d.strftime('%b%Y'))
+            with open(os.path.join(file_path, save_file_name), 'wb') as f:
+                f.write(cfurl.content)
 
     driver.close()

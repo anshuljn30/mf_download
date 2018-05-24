@@ -3,7 +3,7 @@ import cfscrape
 import os
 import pandas as pd
 
-
+'''
 def download(dates, path):
     file_path = os.path.join(path, 'jm')
     if not os.path.exists(file_path):
@@ -34,7 +34,7 @@ def download(dates, path):
                 save_file_name = d.strftime('%Y%m') + str(i) + '.xls'
 
                 if cfurl != b'':
-                    print('Downloading file for ' + d.strftime('%b%Y'))
+                    print('Downloading file for JM on ' + d.strftime('%b%Y'))
                     with open(os.path.join(file_path, save_file_name), 'wb') as f:
                         f.write(cfurl)
 
@@ -59,3 +59,7 @@ def download(dates, path):
             for file in file_names:
                 os.remove(file)
     driver.close()
+'''
+
+def download(dates, path):
+    print("Skipping JM Mutual Fund for now...\n\n")
