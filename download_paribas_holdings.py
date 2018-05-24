@@ -14,17 +14,18 @@ def download(dates, path):
     scraper = cfscrape.create_scraper()
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
-    driver = webdriver.Chrome(executable_path=chrome_driver, chrome_options=options)
-    driver.get("https://www.bnpparibasmf.in/downloads/monthly-portfolio-scheme")
-
-    disclaimer_panel = driver.find_element_by_xpath('.//a[@class = "greenButton download_close"]')
-    disclaimer_panel.click()
-    time.sleep(3)
+    
+    
 
     for d in dates:
         month = d.strftime('%b')
         year = d.strftime('%Y')
+        driver = webdriver.Chrome(executable_path=chrome_driver, chrome_options=options)
+        driver.get("https://www.bnpparibasmf.in/downloads/monthly-portfolio-scheme")
 
+        disclaimer_panel = driver.find_element_by_xpath('.//a[@class = "greenButton download_close"]')
+        disclaimer_panel.click()
+        time.sleep(3)
         if month == 'Dec':
             year_to_click = str(int(year) + 1)
         else:
@@ -43,8 +44,15 @@ def download(dates, path):
         except:
             pass
 
-        file = driver.find_element_by_xpath('.//p[contains(text(), "Monthly Portfolio") and \
-                                contains(text(),"' + month + '") and contains(text(),"' + year[2:3] + '")]')
+        try:
+            load_link = driver.find_element_by_xpath('.//a[text() = "Load more "]')
+            load_link.click()
+            time.sleep(2)
+        except:
+            pass    
+
+        file = driver.find_element_by_xpath('.//p[(contains(text(), "Monthly Portfolio") or contains(text(), "MONTHLY PORTFOLIO")) and \
+                                (contains(text(),"' + month + '") or contains(text(),"' + month.upper() + '")) and contains(text(),"' + year[2:4] + '")]')
         file = file.find_element_by_xpath('../..')
         file_link = file.get_attribute('href')
 
@@ -52,8 +60,10 @@ def download(dates, path):
         cfurl = scraper.get(file_link)
         save_file_name = "bnp_paribas_portfolios_" + d.strftime('%Y%m') + '.xls'
 
-        print('Downloading file for ' + d.strftime('%b%Y'))
+        print('Downloading file for Paribas on ' + d.strftime('%b%Y'))
         with open(os.path.join(file_path, save_file_name), 'wb') as f:
             f.write(cfurl.content)
 
-    driver.close()
+
+
+        driver.close()
