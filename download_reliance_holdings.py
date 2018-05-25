@@ -27,7 +27,7 @@ def download(dates, path):
             save_file_name = "reliance_portfolios_" + d.strftime('%Y%m') + '.xls'
 
             if cfurl != b'':
-                print('Downloading file for ' + d.strftime('%b%Y'))
+                print('Downloading file for Reliance on ' + d.strftime('%b%Y'))
                 with open(os.path.join(file_path, save_file_name), 'wb') as f:
                     f.write(cfurl)
 

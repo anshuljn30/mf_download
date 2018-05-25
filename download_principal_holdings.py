@@ -18,7 +18,8 @@ def download(dates, path):
         year = d.strftime('%Y')
         month = d.strftime('%B')
 
-        div = driver.find_element_by_xpath('.//div[@contentindex="24c"]')
+        p = driver.find_element_by_xpath('.//p[contains(text(), "Monthly Portfolios")]')
+        div = p.find_element_by_xpath('.//following::div')
         file = div.find_elements_by_xpath(
             './/a[contains(text(), "' + year + '") and contains(text(), "' + month + '")]')
 
@@ -28,7 +29,7 @@ def download(dates, path):
             save_file_name = "principal_portfolios_" + d.strftime('%Y%m') + '.xls'
 
             if cfurl != b'':
-                print('Downloading file for ' + d.strftime('%b%Y'))
+                print('Downloading file for Principal on ' + d.strftime('%b%Y'))
                 with open(os.path.join(file_path, save_file_name), 'wb') as f:
                     f.write(cfurl)
 

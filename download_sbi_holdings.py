@@ -26,12 +26,18 @@ def download(dates, path):
         year = d.strftime("%Y")
         month = d.strftime("%B")
 
-        select_year = Select(driver.find_element_by_id("ddl_year"))
-        select_year.select_by_visible_text(year)
-        time.sleep(5)
+        try:
+            select_year = Select(driver.find_element_by_id("ddl_year"))
+            select_year.select_by_visible_text(year)
+            time.sleep(5)
+        except:
+            continue    
 
-        select_month = Select(driver.find_element_by_id("ddl_month"))
-        select_month.select_by_visible_text(month)
+        try:
+            select_month = Select(driver.find_element_by_id("ddl_month"))
+            select_month.select_by_visible_text(month)
+        except:
+            continue    
 
         driver.find_element_by_id("ctl00_PlaceHolderMain_SBIMFControlSelectorID_ctl00_btnArchive").click()
         time.sleep(5)
@@ -45,12 +51,12 @@ def download(dates, path):
             driver.get(file_link)
             # set delay according to download speed
             time.sleep(60)
-            print("Downloaded file for " + d.strftime("%B%Y"))
+            print("Downloading file for SBI on " + d.strftime("%B%Y"))
             for file in os.listdir(file_path):
                 if ('.xls' in file) and (('equity' in file.lower()) or ('others' in file.lower())) and (
                     year in file) and ((month.lower() in file.lower()) or (d.strftime("%m") in file.lower())):
-                    extension = file[file.index('.'):]
-                    name = "sbi_portfolios_" + d.strftime('%Y%m') + extension
+                    
+                    name = "sbi_portfolios_" + d.strftime('%Y%m') + '.xls'
                     # copyfile(os.path.join(default_download_path, file), os.path.join(file_path, name))
                     # os.remove(os.path.join(default_download_path, file))
                     os.rename(os.path.join(file_path, file), os.path.join(file_path, name))

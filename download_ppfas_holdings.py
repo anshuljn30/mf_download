@@ -22,15 +22,17 @@ def download(dates, path):
         portfolio_panel = driver.find_element_by_xpath('.//h3[contains(text(), "Portfolio Disclosure - Parag Parikh")]')
         portfolio_panel = portfolio_panel.find_element_by_xpath('ancestor::div')
 
-        file = portfolio_panel.find_element_by_xpath(
+        file = portfolio_panel.find_elements_by_xpath(
             '//a[contains(text(),"' + month + '") and contains(text(),"' + year + '")]')
-        file_link = file.get_attribute('href')
 
-        cfurl = scraper.get(file_link)
-        save_file_name = "ppfas_portfolios_" + d.strftime('%Y%m') + '.xls'
+        if file:
+            file_link = file[0].get_attribute('href')
 
-        print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path, save_file_name), 'wb') as f:
-            f.write(cfurl.content)
+            cfurl = scraper.get(file_link)
+            save_file_name = "ppfas_portfolios_" + d.strftime('%Y%m') + '.xls'
+
+            print('Downloading file for Ppfas on ' + d.strftime('%b%Y'))
+            with open(os.path.join(file_path, save_file_name), 'wb') as f:
+                f.write(cfurl.content)
 
     driver.close()
