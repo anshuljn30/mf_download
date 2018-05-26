@@ -25,15 +25,16 @@ def download(dates, path):
         year_panel.click()
         year_panel = year_panel.find_element_by_xpath('ancestor::h4/following-sibling::div')
 
-        file = year_panel.find_element_by_xpath('.//a[contains(text(), "Portfolio") and \
+        file = year_panel.find_elements_by_xpath('.//a[contains(text(), "Portfolio") and \
                                 contains(text(),"' + month + '") and contains(text(),"' + year + '")]')
-        file_link = file.get_attribute('href')
+        if file:
+            file_link = file[0].get_attribute('href')
 
-        cfurl = scraper.get(file_link)
-        save_file_name = "tata_portfolios_" + d.strftime('%Y%m') + '.xls'
+            cfurl = scraper.get(file_link)
+            save_file_name = "tata_portfolios_" + d.strftime('%Y%m') + '.xls'
 
-        print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path, save_file_name), 'wb') as f:
-            f.write(cfurl.content)
+            print('Downloading file for Tata on ' + d.strftime('%b%Y'))
+            with open(os.path.join(file_path, save_file_name), 'wb') as f:
+                f.write(cfurl.content)
 
     driver.close()

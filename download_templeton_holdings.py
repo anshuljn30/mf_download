@@ -33,13 +33,14 @@ def download(dates, path):
         file = driver.find_element_by_xpath('.//span[contains(text(), "ISIN Report") and \
                                 contains(text(),"' + month + '") and contains(text(),"' + year + '")]')
         file = file.find_element_by_xpath('..')
-        file_link = file.get_attribute('href')
+        if file:
+            file_link = file.get_attribute('href')
 
-        cfurl = scraper.get(file_link)
-        save_file_name = "franklin_templeton_portfolios_" + d.strftime('%Y%m') + '.xls'
+            cfurl = scraper.get(file_link)
+            save_file_name = "franklin_templeton_portfolios_" + d.strftime('%Y%m') + '.xls'
 
-        print('Downloading file for ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path, save_file_name), 'wb') as f:
-            f.write(cfurl.content)
+            print('Downloading file for Franklin Templeton on ' + d.strftime('%b%Y'))
+            with open(os.path.join(file_path, save_file_name), 'wb') as f:
+                f.write(cfurl.content)
 
     driver.close()

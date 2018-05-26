@@ -12,8 +12,11 @@ def download(dates, path):
         os.mkdir(file_path)
 
     chrome_driver = 'chromedriver.exe'
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": file_path}
+    chrome_options.add_experimental_option("prefs", prefs)
     scraper = cfscrape.create_scraper()
-    driver = webdriver.Chrome(executable_path=chrome_driver)
+    driver = webdriver.Chrome(executable_path=chrome_driver, chrome_options=chrome_options)
     driver.get("https://www.utimf.com/forms-and-downloads/")
 
     for d in dates:
@@ -40,35 +43,46 @@ def download(dates, path):
         file = block.find_elements_by_xpath('.//a')
 
         if file:
-            file_link = file[0].get_attribute("href")
+            '''file_link = file[0].get_attribute("href")
             cfurl = scraper.get(file_link).content
             save_file_name = "uti_portfolios_" + d.strftime('%Y%m') + '.zip'
 
             if cfurl != b'':
-                print('Downloading file for ' + d.strftime('%b%Y'))
+                print('Downloading file for UTI on ' + d.strftime('%b%Y'))
                 with open(os.path.join(file_path, save_file_name), 'wb') as f:
                     f.write(cfurl)
-
+            '''
+            for f in file:
+                f.click()
+                time.sleep(5)
+            print("Downloading file for UTI on " + d.strftime('%b%Y'))
+            
             for f in os.listdir(file_path):
-                if f.endswith(".zip") or f.endswith(".rar"):
+                if f.endswith(".zip"):
                     patoolib.extract_archive(os.path.join(file_path, f), outdir=file_path)
+                    os.remove(os.path.join(file_path, f))
+                elif f.endswith(".rar"):    
+                    patoolib.extract_archive(os.path.join(file_path, f), outdir=file_path, program = "UnRar.exe")
                     os.remove(os.path.join(file_path, f))
             # sometimes archives are present inside archives therefore extract again
             for f in os.listdir(file_path):
-                if f.endswith(".zip") or f.endswith(".rar"):
+                if f.endswith(".zip"):
                     patoolib.extract_archive(os.path.join(file_path, f), outdir=file_path)
                     os.remove(os.path.join(file_path, f))
+                elif f.endswith(".rar"):    
+                    patoolib.extract_archive(os.path.join(file_path, f), outdir=file_path, program = "UnRar.exe")
+                    os.remove(os.path.join(file_path, f))
             for f in os.listdir(file_path):
-                if f.startswith("pf") or f.startswith("sebi"):
-                    os.rename(os.path.join(file_path, f), "uti_portfolios_" + d.strftime('%Y%m') + ".xls")
+                if ("pf" in f.lower() or "sebi" in f.lower()) and ('.xls' in f):
+                    os.rename(os.path.join(file_path, f), os.path.join(file_path, "uti_portfolios_" + d.strftime('%Y%m') + ".xls"))
             # sometimes there's a directory within the archive so need to check that as well
             directories = next(os.walk(file_path))[1]
             for directory in directories:
                 for f in os.listdir(os.path.join(file_path, directory)):
-                    if f.startswith("pf") or f.startswith("sebi"):
+                    if ("pf" in f.lower() or "sebi" in f.lower()) and ('.xls' in f ):
                         copyfile(os.path.join(file_path, directory, f),
                                  os.path.join(file_path, "uti_portfolios_" + d.strftime('%Y%m') + ".xls"))
-                        rmtree(os.path.join(file_path, directory))
+                rmtree(os.path.join(file_path, directory))
 
             # delete other files
             for f in os.listdir(file_path):
