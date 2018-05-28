@@ -54,7 +54,7 @@ def download(dates, path):
                 continue    
 
         file.find_element_by_xpath('following-sibling::td//input').click()
-        time.sleep(2)
+        time.sleep(10)
 
         save_file_name = "shriram_portfolios_" + d.strftime('%Y%m') + '.xls'
         print('Downloading file for Shriram for ' + d.strftime('%b%Y'))

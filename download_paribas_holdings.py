@@ -51,18 +51,19 @@ def download(dates, path):
         except:
             pass    
 
-        file = driver.find_element_by_xpath('.//p[(contains(text(), "Monthly Portfolio") or contains(text(), "MONTHLY PORTFOLIO")) and \
+        file = driver.find_elements_by_xpath('.//p[(contains(text(), "Monthly Portfolio") or contains(text(), "MONTHLY PORTFOLIO")) and \
                                 (contains(text(),"' + month + '") or contains(text(),"' + month.upper() + '")) and contains(text(),"' + year[2:4] + '")]')
-        file = file.find_element_by_xpath('../..')
-        file_link = file.get_attribute('href')
+        if file:
+            file = file[0].find_element_by_xpath('../..')
+            file_link = file.get_attribute('href')
 
-        time.sleep(3)
-        cfurl = scraper.get(file_link)
-        save_file_name = "bnp_paribas_portfolios_" + d.strftime('%Y%m') + '.xls'
+            time.sleep(3)
+            cfurl = scraper.get(file_link)
+            save_file_name = "bnp_paribas_portfolios_" + d.strftime('%Y%m') + '.xls'
 
-        print('Downloading file for Paribas on ' + d.strftime('%b%Y'))
-        with open(os.path.join(file_path, save_file_name), 'wb') as f:
-            f.write(cfurl.content)
+            print('Downloading file for Paribas on ' + d.strftime('%b%Y'))
+            with open(os.path.join(file_path, save_file_name), 'wb') as f:
+                f.write(cfurl.content)
 
 
 

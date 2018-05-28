@@ -16,8 +16,8 @@ def download(dates, path):
     driver = webdriver.Chrome(executable_path=chrome_driver)
     driver.get("https://www.franklintempletonindia.com/investor/reports")
 
-    webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
-    time.sleep(2)
+    #webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+    time.sleep(10)
     dropdwn_panel = driver.find_element_by_xpath('.//span[contains(text(), "Disclosure of AUM by Geography")]')
     dropdwn_panel.click()
     time.sleep(2)
