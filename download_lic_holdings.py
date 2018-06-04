@@ -50,7 +50,7 @@ def download(dates, path):
 
         if file:
             file_link = file[0].get_attribute("href")
-            cfurl = scraper.get(file_link).content
+            cfurl = scraper.get(file_link, verify = False).content
 
             save_file_name = 'lic_portfolios_' + d.strftime("%Y%m") + '.xls'
             if cfurl != b'':
