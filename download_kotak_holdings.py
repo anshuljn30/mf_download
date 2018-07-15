@@ -2,7 +2,7 @@ from selenium import webdriver
 import time
 import os
 
-'''
+
 def download(dates, path):
     url = 'https://assetmanagement.kotak.com/portfolios'
     file_path = os.path.join(path, 'kotak')
@@ -36,6 +36,6 @@ def download(dates, path):
                     if not f.startswith("kotak_"):
                         os.rename(os.path.join(file_path, f), os.path.join(file_path, save_file_name))
             driver.close()
-'''
-def download(dates, path):
-    print("Skipping Kotak for now...\n\n")
+
+#def download(dates, path):
+ #   print("Skipping Kotak for now...\n\n")

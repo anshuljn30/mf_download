@@ -1,3 +1,4 @@
+#daily data
 from selenium import webdriver
 import cfscrape
 import time
